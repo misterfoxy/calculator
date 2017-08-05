@@ -1,75 +1,105 @@
 $(document).ready(function(){
-  //stores input for users to calculate later
-  var inputs = [""];
 
-  // store current input string
-  var totalString;
-  //operators array for validation without the .
-  var operators1 = ["+" , "-" , "/" , "*"];
-  //operators with . for validation
-  var operators2 = ["."];
+  var firstNum = "";
+  var secondNum = "";
+  var result = "";
+  var operator = "";
+  var operatorCheck = false;
 
-  var nums = [0,1,2,3,4,5,6,7,8,9];
+  $('.number').on("click", function() {
+    if(operatorCheck === false){
+      var number = $(this).attr('value');
+      firstNum+= number;
+      $('#first-number').text(firstNum);
+    }
+    else if(operatorCheck === true){
+      var number = $(this).attr('value');
+      secondNum+= number;
+      console.log(secondNum);
+      $('#second-number').text(secondNum);
+    }
+  });
 
+  $('.operator').on("click", function(){
+    operatorCheck = true;
+    var operatorValue = $(this).attr('value');
 
-  function getValue(input){
+    if(operatorValue === "minus"){
+      operatorValue = "-";
+    }
 
-    if(operators2.includes(inputs[inputs.length-1]=== true && input === ".")){
-      console.log("Duplicat '.' ");
-    };
+    else if(operatorValue === "plus"){
+      operatorValue = "+";
+    }
 
-    else if (inputs.length===1 && operators1.includes(input)===false){
-      inputs.push(input);
-    };
+    else if(operatorValue === "times"){
+      operatorValue = "*";
+    }
 
-    else if (operators1.includes(inputs[inputs.length-1])===false){
-      inputs.push(input);
-    };
+    else if(operatorValue === "divide"){
+      operatorValue = "/";
+    }
 
-    else if (nums.includes(Number(input))){
-      inputs.push(input);
-    };
+    else if(operatorValue === "power"){
+      operatorValue = "^";
+    }
 
-    update();
+    operator += operatorValue;
+    console.log(operator);
+    $('#operator').text(operator);
+  });
 
-  };
+  $('.equal').on("click", function() {
+    var number1 = parseInt(firstNum);
+    var number2 = parseInt(secondNum);
 
-  function update(){
-    totalString = inputs.join("");
-    $('#steps').html(totalString);
-  };
+    if(operator === "+"){
+      result = number1 + number2;
+      $('#result').text(result);
+    }
 
-  function getTotal(){
-    totalString = inputs.join("");
-    $('#steps').html(eval(totalString));
-  };
+    else if(operator === "-"){
+      result = number1 - number2;
+      $('#result').text(result);
+    }
 
-  $('a').on("click", function(){
+    else if(operator === "*"){
+      result = number1 * number2;
+      $('#result').text(result);
+    }
 
-    if(this.id === "deleteAll"){
-      inputs = [""];
-      update();
-    };
+    else if(operator === "/"){
+        if(number2===0){
+          $('#result').text("Why would you do this?");
+        } else{
+      result = number1 / number2;
+      $('#result').text(result);
+      }
+    }
 
-    else if (this.id === "backOne"){
-      inputs.pop();
-      update();
-    };
-
-    else if (this.id === "total"){
-      console.log("something");
-      getTotal();
-    };
-
-    else {
-      if(inputs[inputs.length-1].indexOf("+","-","/","*","-1") === -1){
-        getValue(this.id);
-      };
-      else{
-        getValue(this.id);
-      };
-    };
+    else if(operator === "^"){
+      result = (number1 * number1)
+      $('#result').text(result);
+    }
 
   });
+
+  $('.clear').on("click", function(){
+    operatorCheck = false;
+    firstNum = "";
+    secondNum = "";
+    result = "";
+    operator = "";
+    $('#result').empty();
+    $('#operator').empty();
+    $('#first-number').empty();
+    $('#second-number').empty();
+
+
+
+  });
+
+
+
 
 });
